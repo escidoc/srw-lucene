@@ -16,22 +16,42 @@
 
 package org.osuosl.srw.lucene;
 
-import org.apache.lucene.index.Term;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.search.*;
+import gov.loc.www.zing.srw.ExtraDataType;
+import gov.loc.www.zing.srw.TermType;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.apache.axis.types.NonNegativeInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.axis.types.NonNegativeInteger;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.RangeQuery;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.WildcardQuery;
 import org.osuosl.srw.CQLTranslator;
 import org.osuosl.srw.ResolvingQueryResult;
 import org.osuosl.srw.SRWDiagnostic;
-import org.z3950.zing.cql.*;
+import org.z3950.zing.cql.CQLAndNode;
+import org.z3950.zing.cql.CQLBooleanNode;
+import org.z3950.zing.cql.CQLNode;
+import org.z3950.zing.cql.CQLNotNode;
+import org.z3950.zing.cql.CQLOrNode;
+import org.z3950.zing.cql.CQLTermNode;
 
-import java.util.*;
-import java.io.IOException;
-
-import gov.loc.www.zing.srw.ExtraDataType;
-import gov.loc.www.zing.srw.TermType;
 import ORG.oclc.os.SRW.QueryResult;
 
 /**
