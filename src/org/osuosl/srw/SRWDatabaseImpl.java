@@ -117,7 +117,7 @@ public class SRWDatabaseImpl extends ORG.oclc.os.SRW.SRWDatabase{
             }
 
             TermsType terms=new TermsType();
-            TermType[] term = cqlTranslator.scan(root, extraData);
+            TermType[] term = cqlTranslator.scan(root, request);
             terms.setTerm(term);
             response.setTerms(terms);
             return response;
