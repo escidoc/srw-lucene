@@ -123,7 +123,7 @@ public class SRWDatabaseImpl extends ORG.oclc.os.SRW.SRWDatabase{
             return response;
         }
 
-        catch(org.z3950.zing.cql.UnknownQualifierException e) {
+        catch(org.z3950.zing.cql.UnknownIndexException e) {
             log.error(e);
             return diagnostic(SRWDiagnostic.UnsupportedIndex, e.getMessage(),
                     response);

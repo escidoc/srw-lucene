@@ -179,7 +179,7 @@ public class LuceneTranslator implements CQLTranslator {
             /**
              * scan query should always be a single term, just get that term's qualifier
              */
-            String searchField = ((CQLTermNode)queryRoot).getQualifier();
+            String searchField = ((CQLTermNode)queryRoot).getIndex();
             boolean exact = ((CQLTermNode)queryRoot).getRelation().toCQL().equalsIgnoreCase("exact");
             boolean any = ((CQLTermNode)queryRoot).getRelation().toCQL().equalsIgnoreCase("any");
 
@@ -320,7 +320,7 @@ public class LuceneTranslator implements CQLTranslator {
             CQLTermNode ctn=(CQLTermNode)node;
 
             String relation = ctn.getRelation().getBase();
-            String index=ctn.getQualifier();
+            String index=ctn.getIndex();
 
             if (!index.equals("")) {
                 if(relation.equals("=") || relation.equals("scr")) {
@@ -507,7 +507,7 @@ public class LuceneTranslator implements CQLTranslator {
         }
         else if(node instanceof CQLTermNode) {
             CQLTermNode ctn=(CQLTermNode)node;
-            log.info("term(qualifier=\""+ctn.getQualifier()+"\" relation=\""+
+            log.info("term(qualifier=\""+ctn.getIndex()+"\" relation=\""+
                 ctn.getRelation().getBase()+"\" term=\""+ctn.getTerm()+"\")");
         }
         else log.info("UnknownCQLNode("+node+")");
