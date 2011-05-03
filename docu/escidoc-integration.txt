@@ -1,0 +1,8 @@
+﻿-SRWLucene-Projekt in SRWServer integrieren (http://wiki.osuosl.org/display/OCKPub/SRWLucene):
+	-download SRWLucene sources
+	-put it as a project in eclipse
+	-modify org.osuosl.srw.lucene.LuceneTranslator:
+		make Methods makeQuery non-static!!! because derived class EscidocLuceneTranslator 
+		uses Analyzer in Method makeQuery and Analyzer may not be static.!!!
+	-run build to generate .jar-file
+	-put jar-file into SRW-2.0 Project lib-directory.

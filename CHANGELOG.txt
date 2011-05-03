@@ -1,0 +1,11 @@
+
+SRWLucene Revision History
+
+=========================================================
+1.0
+=========================================================
+
+Initial release!
+
+ - Support for most CQL queries
+ - Support for most SRW/U parameters
