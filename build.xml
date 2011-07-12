@@ -1,0 +1,98 @@
+<project name="SRWLucene" default="build" basedir=".">
+	<description>
+        Builds the SRW module
+    </description>
+	
+	<!-- ==================================== -->
+	<!-- BUILD PROPERTIES                     -->
+	<!-- ==================================== -->
+	<property name="app.name" value="SRWLucene"/>
+	<property name="app.version" value="1.0"/>
+
+    
+	<!-- set global properties for this build -->
+	<property name="src" value="src" />
+	<property name="lib" value="lib" />
+	<property name="dist" value="dist" />
+	<property name="build" value="classes" />
+
+	<!-- produced files -->
+	<property name="jarfileName" value="${app.name}-${app.version}.jar"/>
+	<property name="jarfile" value="${dist}/${jarfileName}"/>
+    <property name="srctar"  value="${dist}/${app.name}-${app.version}.src.tar.gz" />
+    <property name="binarytar"  value="${dist}/${app.name}-${app.version}.tar.gz" />
+
+    <!-- classpath -->
+	<path id="compilation-classpath">
+	    <fileset dir="${lib}">
+	    	<include name="**/*.jar"/>
+	        <include name="**/*.zip"/>
+	    </fileset>
+    </path>
+    <property name="compilation-classpath" refid="compilation-classpath"/>
+
+	<!-- ==================================== -->
+	<!-- TARGETS		                      -->
+	<!-- ==================================== -->
+	
+	<target name="build" depends="init, compile, jar, tarsrc, tarbinary" description="generate the distribution"/>
+    <target name="cleanBuild" depends="clean, init, compile, jar, tarsrc, tarbinary" description="generate the distribution"/>
+
+    <target name="init">
+        <!-- Create the build directory structure used by compile -->
+		<mkdir dir="${dist}" />
+		<mkdir dir="${build}" />
+	</target>
+	
+	<target name="compile" depends="init" description="compile the source " >
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}" debug="true">
+			<classpath refid="compilation-classpath" />	
+		</javac>		
+	</target>
+	
+	<target name="jar" depends="init, compile">
+		<jar jarfile="${jarfile}" basedir="${build}" />						
+	</target>
+
+    <target name="tarsrc" description="build a tar of the src files">
+        <delete file="${srctar}"/>
+        <tar destfile="${srctar}" compression="gzip" longfile="gnu">
+            <tarfileset dir="../.">
+                <include name="${app.name}/**/*"/>
+                <exclude name="${app.name}/${build}/**/*"/>
+                <exclude name="${app.name}/**/*.svn"/>
+                <exclude name="${app.name}/${dist}/**/*"/>
+            </tarfileset>
+        </tar>
+    </target>
+
+    <target name="tarbinary" description="build a tar of the jar files">
+        <delete file="${binarytar}"/>
+        <copy file="${jarfile}" todir="."/>
+        <tar destfile="${binarytar}" compression="gzip" longfile="gnu">
+            <tarfileset dir="../.">
+                <include name="${app.name}/${jarfileName}"/>
+                <include name="${app.name}/${lib}/*"/>
+                <include name="${app.name}/CHANGELOG.txt"/>
+                <include name="${app.name}/README.txt"/>
+            </tarfileset>
+        </tar>
+        <delete file="${jarfileName}" />
+    </target>
+
+    <target name="clean" description="clean up">
+		<!-- Delete the ${build} directory trees -->
+        <delete dir="${dist}" />
+        <delete dir="${build}" />
+	</target>
+
+    <target name="dist" description="Final preparation of the dist directory">
+        <copy todir="${dist}" >
+            <fileset dir="${lib}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+   
+</project>
